@@ -1,0 +1,8 @@
+version: '2'
+
+services:
+  gateway:
+    image: gateway
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
