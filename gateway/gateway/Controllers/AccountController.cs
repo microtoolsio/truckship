@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Gateway.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Controllers
@@ -7,8 +8,16 @@ namespace Gateway.Controllers
     [Route("api/Account")]
     public class AccountController : Controller
     {
+        private readonly UserCache userCache;
+
+        public AccountController(UserCache userCache)
+        {
+            this.userCache = userCache;
+        }
+
         public async Task<IActionResult> SignIn()
         {
+           // var user = this.userCache.Get()
             return Ok();
         }
 
