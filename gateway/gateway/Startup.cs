@@ -29,6 +29,13 @@ namespace gateway
         {
             // Add framework services.
             services.AddMvc();
+
+            //NOTE: Get from appsettings
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = "localhost";
+                option.InstanceName = "master";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
