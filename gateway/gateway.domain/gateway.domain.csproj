@@ -2,14 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>Gateway.Domain</AssemblyName>
+    <RootNamespace>Gateway.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Class1.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="User.cs" />
   </ItemGroup>
 
 </Project>

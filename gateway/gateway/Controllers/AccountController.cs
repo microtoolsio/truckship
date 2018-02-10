@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace gateway.Controllers
+namespace Gateway.Controllers
 {
     [Produces("application/json")]
     [Route("api/Account")]

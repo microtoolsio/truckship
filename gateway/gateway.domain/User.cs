@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace gateway.domain
+namespace Gateway.Domain
 {
-
     public class User
     {
         public Guid Id { get; set; }

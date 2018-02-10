@@ -1,10 +1,10 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
-using gateway.domain;
+using Gateway.Domain;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
-namespace gateway.core
+namespace Gateway.Core
 {
 
     public class UserCache

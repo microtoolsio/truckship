@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "gateway", "gateway\gateway.csproj", "{07195724-2134-4D29-9124-3EDBA340B360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gateway", "Gateway\Gateway.csproj", "{07195724-2134-4D29-9124-3EDBA340B360}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2B145BD7-EA80-4BFA-AFE5-2748BB0035D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gateway.core", "..\gateway.core\gateway.core.csproj", "{0D5B2DA3-2252-4EA0-8655-E081D22075A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Core", "Gateway.Core\Gateway.Core.csproj", "{0D5B2DA3-2252-4EA0-8655-E081D22075A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gateway.domain", "gateway.domain\gateway.domain.csproj", "{E60CB7ED-0CE2-4628-A560-3A8D64632D46}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Domain", "Gateway.Domain\Gateway.Domain.csproj", "{E60CB7ED-0CE2-4628-A560-3A8D64632D46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

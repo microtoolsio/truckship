@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <AssemblyName>Gateway</AssemblyName>
+    <RootNamespace>Gateway</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
