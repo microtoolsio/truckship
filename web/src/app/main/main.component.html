@@ -1,0 +1,34 @@
+<mat-sidenav-container>
+
+    <div id="fuse-main-content">
+
+        <div id="wrapper">
+
+            <!-- NAVBAR: Left -->
+            <fuse-navbar-vertical [folded]="fuseSettings.layout.navigationFolded"
+                                  class="left-navbar"
+                                  [ngClass]="fuseSettings.colorClasses.navbar">
+            </fuse-navbar-vertical>
+            <!-- / NAVBAR: Left -->
+
+            <div class="content-wrapper">
+                <!-- TOOLBAR: Below -->
+              <ng-container>
+                <fuse-toolbar class="below" [ngClass]="fuseSettings.colorClasses.toolbar"></fuse-toolbar>
+              </ng-container>
+
+                <!-- / TOOLBAR: Below -->
+                <fuse-content></fuse-content>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- QUICK PANEL -->
+    <mat-sidenav fuseMatSidenavHelper="quick-panel" align="end">
+        <fuse-quick-panel></fuse-quick-panel>
+    </mat-sidenav>
+    <!-- / QUICK PANEL -->
+
+</mat-sidenav-container>
