@@ -24,7 +24,6 @@ import { MaintenanceModule } from './main/content/maintenance/maintenence.module
 import { TranslateModule } from '@ngx-translate/core';
 import { FuseLoginComponent } from "./main/content/authentication/login/login.component";
 
-
 const appRoutes: Routes = [
   {
     path: 'login',

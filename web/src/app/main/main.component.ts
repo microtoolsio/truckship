@@ -22,8 +22,8 @@ export class FuseMainComponent implements OnInit, OnDestroy
         private fuseConfig: FuseConfigService,
         private platform: Platform,
         @Inject(DOCUMENT) private document: any
-    )
-    {
+    ) {
+      debugger;
         this.onSettingsChanged =
             this.fuseConfig.onSettingsChanged
                 .subscribe(

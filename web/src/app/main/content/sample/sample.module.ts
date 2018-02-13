@@ -5,10 +5,13 @@ import { SharedModule } from '../../../core/modules/shared.module';
 
 import { FuseSampleComponent } from './sample.component';
 
+import { AuthGuard } from "../../../core/services/auth/auth-guard.service";
+
 const routes = [
     {
         path     : 'sample',
-        component: FuseSampleComponent
+        component: FuseSampleComponent,
+        canActivate: [AuthGuard],
     }
 ];
 

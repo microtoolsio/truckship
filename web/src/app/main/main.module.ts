@@ -14,6 +14,10 @@ import { FuseQuickPanelComponent } from './quick-panel/quick-panel.component';
 import { FuseShortcutsModule } from '../core/components/shortcuts/shortcuts.module';
 import { FuseSearchBarModule } from '../core/components/search-bar/search-bar.module';
 
+import { AuthGuard } from "../core/services/auth/auth-guard.service";
+import { AuthService } from "../core/services/auth/auth.service";
+import { HttpService } from "../core/services/http.service";
+
 @NgModule({
     declarations: [
         FuseContentComponent,
@@ -33,7 +37,8 @@ import { FuseSearchBarModule } from '../core/components/search-bar/search-bar.mo
     ],
     exports     : [
         FuseMainComponent
-    ]
+    ],
+    providers: [AuthGuard, AuthService, HttpService]
 })
 
 export class FuseMainModule
