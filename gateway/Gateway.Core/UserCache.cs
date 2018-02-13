@@ -1,12 +1,9 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
-using Gateway.Domain;
 using Microsoft.Extensions.Caching.Distributed;
-using Newtonsoft.Json;
 
 namespace Gateway.Core
 {
-
     public class UserCache
     {
         private readonly IDistributedCache cache;
@@ -16,21 +13,26 @@ namespace Gateway.Core
             this.cache = cache;
         }
 
-        public async Task<User> Get(string session)
+        public async Task<string> GetAsync(string session)
         {
             var res = await cache.GetAsync(session);
 
             if (res != null)
             {
-                return JsonConvert.DeserializeObject<User>(Encoding.UTF8.GetString(res));
+                return Encoding.UTF8.GetString(res);
             }
 
             return null;
         }
 
-        public async Task Set(string session, User user)
+        public async Task SetAsync(string session, string ticket, DistributedCacheEntryOptions opts = null)
         {
-            await cache.SetAsync(session, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
+            await cache.SetAsync(session, Encoding.UTF8.GetBytes(ticket), opts);
+        }
+
+        public async Task RemoveAsync(string session)
+        {
+            await cache.RemoveAsync(session);
         }
     }
 }

@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Gateway.Core;
+using Gateway.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace Gateway.Controllers
 {
@@ -19,13 +21,13 @@ namespace Gateway.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(string login, string password)
+        public async Task<IActionResult> SignIn(UserModel user)
         {
-            if (LoginUser(login, password))
+            if (LoginUser(user.Login, user.Password))
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, login)
+                    new Claim(ClaimTypes.Name, user.Login)
                 };
 
                 var userIdentity = new ClaimsIdentity(claims, "login");
