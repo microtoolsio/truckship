@@ -33,7 +33,7 @@ namespace Gateway
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IServiceProvider serviceProvider)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<UserCache>();
             services.AddSingleton<GatewaySessionStore>();
@@ -53,7 +53,7 @@ namespace Gateway
                 option.InstanceName = "master";
             });
 
-            services.AddAuthentication()
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.Cookie.HttpOnly = true;
@@ -65,7 +65,15 @@ namespace Gateway
                         context.Response.StatusCode = (int)HttpStatusCode.Unauthorized; 
                         return Task.CompletedTask;
                     };
-                    options.SessionStore = serviceProvider.GetService<GatewaySessionStore>();
+                    var scopeFactory = services
+                        .BuildServiceProvider()
+                        .GetRequiredService<IServiceScopeFactory>();
+
+                    using (var scope = scopeFactory.CreateScope())
+                    {
+                        var provider = scope.ServiceProvider;
+                        options.SessionStore = provider.GetRequiredService<GatewaySessionStore>();
+                    }
                 });
         }
 

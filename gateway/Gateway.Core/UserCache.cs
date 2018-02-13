@@ -13,21 +13,15 @@ namespace Gateway.Core
             this.cache = cache;
         }
 
-        public async Task<string> GetAsync(string session)
+        public async Task<byte[]> GetAsync(string session)
         {
             var res = await cache.GetAsync(session);
-
-            if (res != null)
-            {
-                return Encoding.UTF8.GetString(res);
-            }
-
-            return null;
+            return res;
         }
 
-        public async Task SetAsync(string session, string ticket, DistributedCacheEntryOptions opts = null)
+        public async Task SetAsync(string session, byte[] ticket, DistributedCacheEntryOptions opts = null)
         {
-            await cache.SetAsync(session, Encoding.UTF8.GetBytes(ticket), opts);
+            await cache.SetAsync(session, ticket, opts);
         }
 
         public async Task RemoveAsync(string session)

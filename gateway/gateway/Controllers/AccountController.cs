@@ -21,7 +21,7 @@ namespace Gateway.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(UserModel user)
+        public async Task<IActionResult> SignIn([FromBody]UserModel user)
         {
             if (LoginUser(user.Login, user.Password))
             {

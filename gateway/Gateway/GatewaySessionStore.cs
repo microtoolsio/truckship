@@ -10,11 +10,11 @@ namespace Gateway
 {
     public class GatewaySessionStore : ITicketStore
     {
-        private readonly UserCache userCache;
+        private readonly IDistributedCache userCache;
         // TODO: configurable.
         private const int ExpirationHours = 1;
 
-        public GatewaySessionStore(UserCache userCache)
+        public GatewaySessionStore(IDistributedCache userCache)
         {
             this.userCache = userCache;
         }
@@ -36,19 +36,13 @@ namespace Gateway
                 options.SetAbsoluteExpiration(expiresUtc.Value);
             }
             options.SetSlidingExpiration(TimeSpan.FromHours(ExpirationHours));
-            await userCache.SetAsync(key, JsonConvert.SerializeObject(ticket), options);
+            await userCache.SetAsync(key, TicketSerializer.Default.Serialize(ticket), options);
         }
 
         public async Task<AuthenticationTicket> RetrieveAsync(string key)
         {
             var user = await this.userCache.GetAsync(key);
-            if (string.IsNullOrEmpty(user))
-            {
-                // TODO: NOTE: We can make a call to auth service here.
-                return null;
-            }
-
-            return JsonConvert.DeserializeObject<AuthenticationTicket>(user);
+            return TicketSerializer.Default.Deserialize(user);
         }
 
         public async Task RemoveAsync(string key)
