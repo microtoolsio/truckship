@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using Gateway.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Gateway
 {
@@ -28,10 +33,18 @@ namespace Gateway
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IServiceProvider serviceProvider)
         {
+            services.AddSingleton<UserCache>();
+            services.AddSingleton<GatewaySessionStore>();
+
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(
+                options =>
+                {
+                    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
 
             //NOTE: Get from appsettings
             services.AddDistributedRedisCache(option =>
@@ -40,7 +53,7 @@ namespace Gateway
                 option.InstanceName = "master";
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddCookie(options =>
                 {
                     options.Cookie.HttpOnly = true;
@@ -49,9 +62,10 @@ namespace Gateway
                     CookieSecurePolicy.None : CookieSecurePolicy.Always;
                     options.Events.OnRedirectToLogin = (context) =>
                     {
-                        context.Response.StatusCode = 401;
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized; 
                         return Task.CompletedTask;
                     };
+                    options.SessionStore = serviceProvider.GetService<GatewaySessionStore>();
                 });
         }
 
