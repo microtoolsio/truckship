@@ -23,11 +23,21 @@ import { Error500Module } from './main/content/errors/500/error-500.module';
 import { MaintenanceModule } from './main/content/maintenance/maintenence.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { FuseLoginComponent } from "./main/content/authentication/login/login.component";
+import { FuseRegisterComponent } from "./main/content/authentication/register/register.component";
+import { FuseForgotPasswordComponent } from "./main/content/authentication/forgot-password/forgot-password.component";
 
 const appRoutes: Routes = [
   {
     path: 'login',
     component: FuseLoginComponent
+  },
+  {
+    path: 'register',
+    component: FuseRegisterComponent
+  },
+  {
+    path: 'forgot-password',
+    component: FuseForgotPasswordComponent
   },
   {
     path: '**', redirectTo: 'sample',

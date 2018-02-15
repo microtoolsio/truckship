@@ -39,7 +39,8 @@ export class FuseLoginComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      rememberMe: false
     });
 
     this.loginForm.valueChanges.subscribe(() => {
@@ -66,6 +67,7 @@ export class FuseLoginComponent implements OnInit {
   }
 
   onSubmit() {
+    debugger;
     this.authService.loginUser("", "").subscribe(x => {
       if (x.success) {
         this.router.navigate(['/sample']);
