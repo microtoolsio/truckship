@@ -19,7 +19,7 @@ namespace Auth.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(UserModel user)
+        public async Task<IActionResult> Register([FromBody]UserModel user)
         {
             var res = await this.userStorage.CreateUser(new User() { Login = user.Login, PasswordHash = user.PasswordHash });
             return Ok(new ApiResponse() { Error = res.Error });
@@ -27,7 +27,7 @@ namespace Auth.Controllers
 
         [HttpPost]
         [Route("getuser")]
-        public async Task<IActionResult> GetUser(LoginModel login)
+        public async Task<IActionResult> GetUser([FromBody]LoginModel login)
         {
             var res = await this.userStorage.GetUser(login.Login, login.Hash);
             ApiResponse<UserModel> resp = new ApiResponse<UserModel>() { Error = res.Error };
@@ -36,7 +36,7 @@ namespace Auth.Controllers
                 resp.Result = new UserModel() { Login = res.Result.Login, PasswordHash = res.Result.PasswordHash };
             }
 
-            return Ok(new ApiResponse() { Error = res.Error });
+            return Ok(resp);
         }
     }
 }
