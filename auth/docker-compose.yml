@@ -1,8 +1,8 @@
-version: '2'
+version: '3'
 
 services:
   auth:
     image: auth
     build:
-      context: ./auth
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Auth\Dockerfile
