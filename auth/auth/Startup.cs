@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Auth.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,11 @@ namespace Auth
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddOptions();
+            services.Configure<Conf>(Configuration);
+
+            var mongoConnection = this.Configuration.GetConnectionString("Mongo");
+            services.AddSingleton<UserStorage>(new UserStorage(mongoConnection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +39,6 @@ namespace Auth
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }
