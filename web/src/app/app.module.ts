@@ -12,6 +12,7 @@ import { FuseConfigService } from './core/services/config.service';
 import { FuseNavigationService } from './core/components/navigation/navigation.service';
 import { FuseSampleModule } from './main/content/sample/sample.module';
 
+import { ProfileModule } from "./main/content/profile/profile.module";
 import { LoginModule } from './main/content/authentication/login/login.module';
 import { RegisterModule } from './main/content/authentication/register/register.module';
 import { ForgotPasswordModule } from './main/content/authentication/forgot-password/forgot-password.module';
@@ -25,6 +26,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FuseLoginComponent } from "./main/content/authentication/login/login.component";
 import { FuseRegisterComponent } from "./main/content/authentication/register/register.component";
 import { FuseForgotPasswordComponent } from "./main/content/authentication/forgot-password/forgot-password.component";
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { FuseFakeDbService } from './fuse-fake-db/fuse-fake-db.service';
 
 const appRoutes: Routes = [
   {
@@ -40,7 +43,7 @@ const appRoutes: Routes = [
     component: FuseForgotPasswordComponent
   },
   {
-    path: '**', redirectTo: 'sample',
+    path: '**', redirectTo: 'profile',
   },
 ];
 
@@ -55,8 +58,12 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     SharedModule,
     TranslateModule.forRoot(),
-    FuseMainModule,
+    InMemoryWebApiModule.forRoot(FuseFakeDbService, {
+      delay: 0,
+      passThruUnknownUrl: true
+    }),
 
+    FuseMainModule,
     FuseSampleModule,
 
     // Auth
@@ -75,6 +82,8 @@ const appRoutes: Routes = [
 
     // Maintenance
     MaintenanceModule,
+
+    ProfileModule
   ],
   providers: [
     FuseSplashScreenService,

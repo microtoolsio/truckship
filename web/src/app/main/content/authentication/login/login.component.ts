@@ -68,9 +68,9 @@ export class FuseLoginComponent implements OnInit {
 
   onSubmit() {
     debugger;
-    this.authService.loginUser("", "").subscribe(x => {
+    this.authService.loginUser(this.loginForm.value.email, this.loginForm.value.password).subscribe(x => {
       if (x.success) {
-        this.router.navigate(['/sample']);
+        this.router.navigate(['/profile']);
       }
     });
   }
