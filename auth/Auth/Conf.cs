@@ -2,6 +2,6 @@
 {
     public class Conf
     {
-        public string MongoConnection { get; set; }
+        public string SvcId { get; set; }
     }
 }
