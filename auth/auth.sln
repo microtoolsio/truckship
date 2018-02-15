@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Core", "Auth.Core\Auth
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.Domain", "Auth.Domain\Auth.Domain.csproj", "{55CE6E91-4024-45C3-9F63-4E6744358FFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Tests", "..\Auth.Tests\Auth.Tests.csproj", "{E8F5DE28-6BB4-4DD9-B524-F9ABE92CDCF9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth.Tests", "Auth.Tests\Auth.Tests.csproj", "{E8F5DE28-6BB4-4DD9-B524-F9ABE92CDCF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -27,6 +27,8 @@ namespace Auth
 
             services.AddSingleton<UserStorage>();
             services.AddSingleton<SvcTokenStorage>();
+
+            services.AddScoped<SvcAuthFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

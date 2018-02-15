@@ -18,6 +18,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(SvcAuthFilter))]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]UserModel user)
         {
@@ -26,6 +27,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(SvcAuthFilter))]
         [Route("getuser")]
         public async Task<IActionResult> GetUser([FromBody]LoginModel login)
         {
