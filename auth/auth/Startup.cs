@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Auth.Core;
+﻿using Auth.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Auth
 {
@@ -29,7 +23,10 @@ namespace Auth
             services.Configure<Conf>(Configuration);
 
             var mongoConnection = this.Configuration.GetConnectionString("Mongo");
-            services.AddSingleton<UserStorage>(new UserStorage(mongoConnection));
+            services.AddSingleton<MongoDataProvider>(new MongoDataProvider(mongoConnection));
+
+            services.AddSingleton<UserStorage>();
+            services.AddSingleton<SvcTokenStorage>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

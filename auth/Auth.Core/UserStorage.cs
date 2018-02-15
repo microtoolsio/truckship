@@ -6,16 +6,21 @@ namespace Auth.Core
 {
     public class UserStorage
     {
-        private readonly IMongoDatabase userDb;
+        private readonly MongoDataProvider dataProvider;
 
-        public UserStorage(string connectionString)
+        public UserStorage(MongoDataProvider dataProvider)
         {
-            userDb = (new MongoClient(connectionString)).GetDatabase("auth");
+            this.dataProvider = dataProvider;
+
+            var options = new CreateIndexOptions() { Unique = true };
+            var field = new StringFieldDefinition<User>("Login");
+            var indexDefinition = new IndexKeysDefinitionBuilder<User>().Ascending(field);
+            this.dataProvider.AuthDb.GetCollection<User>("users").Indexes.CreateOne(indexDefinition, options);
         }
 
         public async Task<ExecutionResult> CreateUser(User user)
         {
-            var users = userDb.GetCollection<User>("users");
+            var users = this.dataProvider.AuthDb.GetCollection<User>("users");
             if ((await users.CountAsync(x => x.Login == user.Login)) > 0)
             {
                 return new ExecutionResult<User>() { Error = "The user already exist" };
@@ -26,7 +31,7 @@ namespace Auth.Core
 
         public async Task<ExecutionResult<User>> GetUser(string login, string pass)
         {
-            var users = userDb.GetCollection<User>("users");
+            var users = this.dataProvider.AuthDb.GetCollection<User>("users");
             var user = await users.FindAsync(x => x.Login == login && x.PasswordHash == pass);
             return new ExecutionResult<User>() { Result = user.First() };
         }
