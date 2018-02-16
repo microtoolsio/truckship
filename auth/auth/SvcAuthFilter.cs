@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Auth.Core;
+using Auth.Domain;
 using Auth.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,19 +23,19 @@ namespace Auth
             foreach (var argument in context.ActionArguments.Values.Where(v => v is SecuredModel))
             {
                 SecuredModel model = argument as SecuredModel;
-                if (model == null)
+                if (model == null || string.IsNullOrEmpty(model.SvcId) || string.IsNullOrEmpty(model.SvcToken))
                 {
-                    context.Result = new StatusCodeResult((int) HttpStatusCode.Unauthorized);
+                    context.Result = new StatusCodeResult((int)HttpStatusCode.Unauthorized);
                 }
                 else
                 {
                     var current = await tokenStorage.GetSvcToken(model.SvcId);
-                    if (!current.Success || current.Result.Token != model.SvcToken)
+                    if (!current.Success || current.Result == null || current.Result.Token != model.SvcToken)
                     {
                         context.Result = new StatusCodeResult((int)HttpStatusCode.Unauthorized);
                     }
                 }
-                
+
             }
             base.OnActionExecuting(context);
         }

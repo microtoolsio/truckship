@@ -33,7 +33,7 @@ namespace Auth.Core
         {
             var users = this.dataProvider.AuthDb.GetCollection<User>("users");
             var user = await users.FindAsync(x => x.Login == login && x.PasswordHash == pass);
-            return new ExecutionResult<User>() { Result = user.First() };
+            return new ExecutionResult<User>() { Result = await user.FirstOrDefaultAsync() };
         }
     }
 }

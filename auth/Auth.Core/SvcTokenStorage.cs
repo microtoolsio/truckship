@@ -28,8 +28,8 @@ namespace Auth.Core
         public async Task<ExecutionResult<SvcToken>> GetSvcToken(string svcId)
         {
             var tokens = this.dataProvider.AuthDb.GetCollection<SvcToken>("svctokens");
-            var token = await tokens.FindAsync(x => x.SvcId == svcId);
-            return new ExecutionResult<SvcToken>() { Result = token.First() };
+            var token = await tokens.FindAsync(x => true);
+            return new ExecutionResult<SvcToken>() { Result = await token.FirstOrDefaultAsync() };
         }
     }
 }
