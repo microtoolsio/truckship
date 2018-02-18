@@ -25,5 +25,18 @@ namespace Gateway
         {
             routes.TryAdd(SignIn, routeConfig.CurrentValue.SignIn);
         }
+
+        public string GetRoute(string key)
+        {
+            string res = string.Empty;
+
+            routes.TryGetValue(key, out res);
+            if (string.IsNullOrEmpty(res))
+            {
+                throw new RouteNotFoundException(key);
+            }
+
+            return res;
+        }
     }
 }
