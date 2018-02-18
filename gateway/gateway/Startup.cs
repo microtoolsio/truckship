@@ -24,7 +24,9 @@ namespace Gateway
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddJsonFile("routes.json", optional: true, reloadOnChange: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
 
             CurrentEnvironment = env;
@@ -53,6 +55,8 @@ namespace Gateway
                 option.InstanceName = "master";
             });
 
+            services.Configure<RouteConfig>(o => Configuration.GetSection("routeConfig"));
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
@@ -62,7 +66,7 @@ namespace Gateway
                     CookieSecurePolicy.None : CookieSecurePolicy.Always;
                     options.Events.OnRedirectToLogin = (context) =>
                     {
-                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized; 
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                         return Task.CompletedTask;
                     };
                     var scopeFactory = services

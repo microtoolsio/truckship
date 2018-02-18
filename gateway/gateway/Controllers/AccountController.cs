@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Gateway.Core;
 using Gateway.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace Gateway.Controllers
 {
@@ -14,6 +14,7 @@ namespace Gateway.Controllers
     public class AccountController : Controller
     {
         private readonly UserCache userCache;
+        private readonly HttpClient client = new HttpClient();
 
         public AccountController(UserCache userCache)
         {
@@ -25,6 +26,7 @@ namespace Gateway.Controllers
         {
             if (LoginUser(user.Login, user.Password))
             {
+
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Login)
