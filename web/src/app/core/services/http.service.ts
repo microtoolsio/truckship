@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -13,15 +13,19 @@ import { HttpErrorResponse } from "@angular/common/http/src/response";
 @Injectable()
 export class HttpService {
 
+  //TODO: CONSIDER REFACTORING OF ERROR HANDLING
   constructor(private http: HttpClient) {
     this.showLoadingIndicatorObservable = new Subject<boolean>();
+    this.errorsObservable = new Subject<ErrorInfo>();
   }
 
+  public errorsObservable: Subject<ErrorInfo>;
 
   public authHeaderValue: string;
-  public showLoadingIndicator: boolean = false;
 
-  private showLoadingIndicatorObservable: Subject<boolean>;
+  private showLoadingIndicator: boolean = false;
+  public showLoadingIndicatorObservable: Subject<boolean>;
+
   private currentRequestsNumber: number = 0;
 
   public setAuthHeader(value: string) {
@@ -129,21 +133,22 @@ export class HttpService {
   }
 
   private handleError<T>(response: HttpErrorResponse, o: Subscriber<ExecutionResult<T>>) {
-    if (response.error instanceof Error) {
+    if (response.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.log('An error occurred:', response.error.message);
-      o.next(new ExecutionResult(null, new Array<ErrorInfo>(new ErrorInfo(response.error.message, ""))));
+      let errorInfo = new ErrorInfo(response.error.message, "");
+      o.next(new ExecutionResult(null, new Array<ErrorInfo>(errorInfo)));
+      this.errorsObservable.next(errorInfo);
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
       console.log(`Backend returned code ${response.status}, body was: ${response.error}`);
-      o.next(new ExecutionResult(null, new Array<ErrorInfo>(new ErrorInfo(response.error.error, response.status.toString()))));
+      let errorInfo = new ErrorInfo(response.error.error, response.status.toString());
+      o.next(new ExecutionResult(null, new Array<ErrorInfo>(errorInfo)));
+      this.errorsObservable.next(errorInfo);
     }
     o.complete();
-  }
-
-  public getLoadingIndicatorState(): Observable<boolean> {
-    return this.showLoadingIndicatorObservable;
+    
   }
 
   private showLoader() {

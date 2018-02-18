@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
@@ -11,7 +12,13 @@ import { environment } from "../../../../environments/environment";
 @Injectable()
 export class AuthService {
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService, private router: Router) {
+    httpService.errorsObservable.subscribe(x => {
+      if (x.code === '401') {
+        this.router.navigate(['/login']);
+      }
+    });
+  }
 
   public isAuthenticated: boolean = false;
 
