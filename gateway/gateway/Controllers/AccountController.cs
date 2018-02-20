@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Gateway.Core;
 using Gateway.Models;
@@ -24,7 +25,7 @@ namespace Gateway.Controllers
         private readonly SvcRouteTable routeTable;
 
         private readonly HttpClient client = new HttpClient();
-        
+
         #endregion
 
         public AccountController(UserCache userCache, SvcRouteTable routeTable)
@@ -34,13 +35,14 @@ namespace Gateway.Controllers
         }
 
         [HttpPost]
+        [Route("signin")]
         public async Task<IActionResult> SignIn([FromBody]UserModel user)
         {
             var authResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.SignIn), new StringContent(JsonConvert.SerializeObject(new
             {
                 Login = user.Login,
                 Password = user.Password
-            })));
+            }), Encoding.UTF8, "application/json"));
 
             var u = JsonConvert.DeserializeObject<ApiResponse<UserModel>>(await authResp.Content.ReadAsStringAsync());
             if (!u.Success || u.Result == null)
@@ -61,6 +63,18 @@ namespace Gateway.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] UserModel user)
+        {
+            var regResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.Register), new StringContent(JsonConvert.SerializeObject(new
+            {
+                Login = user.Login,
+                Password = user.Password
+            }), Encoding.UTF8, "application/json"));
+
+            return regResp.IsSuccessStatusCode ? (IActionResult)Ok() : (IActionResult)new UnauthorizedResult();
+        }
 
         public async Task<IActionResult> SignOut()
         {

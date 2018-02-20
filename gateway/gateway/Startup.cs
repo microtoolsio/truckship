@@ -39,6 +39,7 @@ namespace Gateway
         {
             services.AddSingleton<UserCache>();
             services.AddSingleton<GatewaySessionStore>();
+            services.AddSingleton<SvcRouteTable>();
 
             // Add framework services.
             services.AddMvc().AddJsonOptions(
@@ -55,7 +56,7 @@ namespace Gateway
                 option.InstanceName = "master";
             });
 
-            services.Configure<RouteConfig>(o => Configuration.GetSection("routeConfig"));
+            services.Configure<RouteConfig>(Configuration);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

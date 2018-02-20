@@ -1,5 +1,4 @@
 ﻿{
-  "routeConfig": {
-    "signin": "http://localhost:50765/api/account/signin"
-  }
+    "SignIn": "http://localhost:50765/api/account/getuser",
+    "Register": "http://localhost:50765/api/account/register"
 }

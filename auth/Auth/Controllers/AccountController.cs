@@ -45,11 +45,19 @@ namespace Auth.Controllers
         [Route("getuser")]
         public async Task<IActionResult> GetUser([FromBody]LoginModel login)
         {
-            var res = await this.userStorage.GetUser(login.Login, login.Hash);
+            var res = await this.userStorage.GetUser(login.Login);
             ApiResponse<UserModel> resp = new ApiResponse<UserModel>() { Error = res.Error };
             if (res.Result != null)
             {
-                resp.Result = new UserModel() { Login = res.Result.Login };
+                var hash = GetHashString(login.Password, Convert.FromBase64String(res.Result.PasswordHash));
+                if (hash != res.Result.PasswordHash)
+                {
+                    return new UnauthorizedResult();
+                }
+                else
+                {
+                    resp.Result = new UserModel() { Login = res.Result.Login };
+                }
             }
 
             return Ok(resp);
@@ -57,8 +65,6 @@ namespace Auth.Controllers
 
         private string GetHashString(string pass, byte[] salt)
         {
-
-
             var h = KeyDerivation.Pbkdf2(password: pass, salt: salt, prf: KeyDerivationPrf.HMACSHA1,
                 iterationCount: 10000, numBytesRequested: 126);
 

@@ -29,10 +29,10 @@ namespace Auth.Core
             return new ExecutionResult();
         }
 
-        public async Task<ExecutionResult<User>> GetUser(string login, string pass)
+        public async Task<ExecutionResult<User>> GetUser(string login)
         {
             var users = this.dataProvider.AuthDb.GetCollection<User>("users");
-            var user = await users.FindAsync(x => x.Login == login && x.PasswordHash == pass);
+            var user = await users.FindAsync(x => x.Login == login);
             return new ExecutionResult<User>() { Result = await user.FirstOrDefaultAsync() };
         }
     }

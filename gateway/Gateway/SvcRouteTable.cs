@@ -9,6 +9,8 @@ namespace Gateway
 
         public const string SignIn = "signin";
 
+        public const string Register = "register";
+
         #endregion
 
         private readonly IOptionsMonitor<RouteConfig> routeConfig;
@@ -19,11 +21,12 @@ namespace Gateway
             BindRoutes();
         }
 
-        private readonly ConcurrentDictionary<string, string> routes;
+        private readonly ConcurrentDictionary<string, string> routes = new ConcurrentDictionary<string, string>();
 
         private void BindRoutes()
         {
             routes.TryAdd(SignIn, routeConfig.CurrentValue.SignIn);
+            routes.TryAdd(Register, routeConfig.CurrentValue.Register);
         }
 
         public string GetRoute(string key)
