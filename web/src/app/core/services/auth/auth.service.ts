@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Observable } from 'rxjs/Observable';
@@ -22,19 +22,22 @@ export class AuthService {
 
   public isAuthenticated: boolean = false;
 
-  public loginUser(email: string, password: string): Observable<ExecutionResult<void>> {
-    this.isAuthenticated = true;
-    return of(new ExecutionResult(null));
+  public register(email: string, password: string): Observable<ExecutionResult<void>> {
+    return this.httpService.post<void>(`${environment.api}/account/register`, { login: email, password: password }).map(x => {
+      return new ExecutionResult(null, x.errors);
+    });
+  }
 
-    //return this.httpService.post<Jwt>(`${environment.api}/auth/login`, { email: email, password: password }).map(x => {
-    //  if (x.success) {
-    //    let tokenString = `Bearer ${x.value.access_token}`;
-    //    this.httpService.setAuthHeader(tokenString);
-    //    this.isAuthenticated = true;
-    //    return new ExecutionResult(null);
-    //  }
-    //  return new ExecutionResult(null, x.errors);
-    //});
+  public loginUser(email: string, password: string): Observable<ExecutionResult<void>> {
+    return this.httpService.post<Jwt>(`${environment.api}/auth/login`, { email: email, password: password }).map(x => {
+      if (x.success) {
+        let tokenString = `Bearer ${x.value.access_token}`;
+        this.httpService.setAuthHeader(tokenString);
+        this.isAuthenticated = true;
+        return new ExecutionResult(null);
+      }
+      return new ExecutionResult(null, x.errors);
+    });
   }
 
   public logOut(): Observable<ExecutionResult<void>> {
