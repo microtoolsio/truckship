@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using Gateway.Configs;
-using Gateway.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,11 +35,11 @@ namespace Gateway
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public async void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<UserCache>();
             services.AddSingleton<GatewaySessionStore>();
             services.AddSingleton<SvcRouteTable>();
+            services.AddSingleton<SecretStorage>();
 
             // Add framework services.
             services.AddMvc().AddJsonOptions(
@@ -82,6 +81,9 @@ namespace Gateway
                         options.SessionStore = provider.GetRequiredService<GatewaySessionStore>();
                     }
                 });
+
+            //var sp = services.BuildServiceProvider();
+            //await sp.GetService<SecretStorage>().Init();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

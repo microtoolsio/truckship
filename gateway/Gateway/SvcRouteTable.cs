@@ -12,6 +12,8 @@ namespace Gateway
 
         public const string Register = "register";
 
+        public const string GetSecret = "getsecret";
+
         #endregion
 
         private readonly IOptionsMonitor<RouteConfig> routeConfig;
@@ -28,6 +30,7 @@ namespace Gateway
         {
             routes.TryAdd(SignIn, routeConfig.CurrentValue.SignIn);
             routes.TryAdd(Register, routeConfig.CurrentValue.Register);
+            routes.TryAdd(GetSecret, routeConfig.CurrentValue.GetSecret);
         }
 
         public string GetRoute(string key)

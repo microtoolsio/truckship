@@ -1,4 +1,5 @@
 ﻿{
-    "SignIn": "http://localhost:50765/api/account/getuser",
-    "Register": "http://localhost:50765/api/account/register"
+  "SignIn": "http://localhost:50765/api/account/getuser",
+  "Register": "http://localhost:50765/api/account/register",
+  "GetSecret": "http://localhost:50765/api/account/getsecret"
 }
