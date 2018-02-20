@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Gateway.Configs;
 using Gateway.Core;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -57,6 +58,7 @@ namespace Gateway
             });
 
             services.Configure<RouteConfig>(Configuration);
+            services.Configure<AppSettings>(Configuration.GetSection("Settings"));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>

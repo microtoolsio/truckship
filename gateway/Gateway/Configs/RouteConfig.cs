@@ -1,4 +1,4 @@
-﻿namespace Gateway
+﻿namespace Gateway.Configs
 {
     public class RouteConfig
     {

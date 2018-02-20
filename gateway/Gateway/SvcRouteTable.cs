@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Gateway.Configs;
 using Microsoft.Extensions.Options;
 
 namespace Gateway

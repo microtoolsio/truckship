@@ -25,7 +25,7 @@ namespace Auth.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody]UserModel user)
         {
-            byte[] salt = new byte[128 / 8];
+            byte[] salt = new byte[128];
             using (var rng = RandomNumberGenerator.Create())
             {
                 rng.GetBytes(salt);
@@ -49,7 +49,7 @@ namespace Auth.Controllers
             ApiResponse<UserModel> resp = new ApiResponse<UserModel>() { Error = res.Error };
             if (res.Result != null)
             {
-                var hash = GetHashString(login.Password, Convert.FromBase64String(res.Result.PasswordHash));
+                var hash = GetHashString(login.Password, Convert.FromBase64String(res.Result.Salt));
                 if (hash != res.Result.PasswordHash)
                 {
                     return new UnauthorizedResult();
@@ -66,7 +66,7 @@ namespace Auth.Controllers
         private string GetHashString(string pass, byte[] salt)
         {
             var h = KeyDerivation.Pbkdf2(password: pass, salt: salt, prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000, numBytesRequested: 126);
+                iterationCount: 10000, numBytesRequested: 128);
 
             return Convert.ToBase64String(h);
         }

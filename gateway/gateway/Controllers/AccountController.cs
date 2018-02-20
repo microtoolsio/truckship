@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Gateway.Configs;
 using Gateway.Core;
 using Gateway.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Gateway.Controllers
@@ -26,12 +28,16 @@ namespace Gateway.Controllers
 
         private readonly HttpClient client = new HttpClient();
 
+
+        private readonly IOptionsMonitor<AppSettings> appSettings;
+
         #endregion
 
-        public AccountController(UserCache userCache, SvcRouteTable routeTable)
+        public AccountController(UserCache userCache, SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings)
         {
             this.userCache = userCache;
             this.routeTable = routeTable;
+            this.appSettings = appSettings;
         }
 
         [HttpPost]
@@ -41,7 +47,9 @@ namespace Gateway.Controllers
             var authResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.SignIn), new StringContent(JsonConvert.SerializeObject(new
             {
                 Login = user.Login,
-                Password = user.Password
+                Password = user.Password,
+                SvcId = this.appSettings.CurrentValue.SvcId,
+                SvcToken = this.appSettings.CurrentValue.Token
             }), Encoding.UTF8, "application/json"));
 
             var u = JsonConvert.DeserializeObject<ApiResponse<UserModel>>(await authResp.Content.ReadAsStringAsync());
@@ -70,7 +78,9 @@ namespace Gateway.Controllers
             var regResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.Register), new StringContent(JsonConvert.SerializeObject(new
             {
                 Login = user.Login,
-                Password = user.Password
+                Password = user.Password,
+                SvcId = this.appSettings.CurrentValue.SvcId,
+                SvcToken = this.appSettings.CurrentValue.Token
             }), Encoding.UTF8, "application/json"));
 
             return regResp.IsSuccessStatusCode ? (IActionResult)Ok() : (IActionResult)new UnauthorizedResult();
