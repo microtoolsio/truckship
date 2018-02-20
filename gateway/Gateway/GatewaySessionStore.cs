@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Gateway.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Caching.Distributed;

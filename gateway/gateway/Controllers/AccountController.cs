@@ -1,15 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Gateway.Configs;
-using Gateway.Core;
 using Gateway.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -22,8 +18,6 @@ namespace Gateway.Controllers
     {
         #region [ Fields ]
 
-        private readonly UserCache userCache;
-
         private readonly SvcRouteTable routeTable;
 
         private readonly HttpClient client = new HttpClient();
@@ -33,9 +27,8 @@ namespace Gateway.Controllers
 
         #endregion
 
-        public AccountController(UserCache userCache, SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings)
+        public AccountController(SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings)
         {
-            this.userCache = userCache;
             this.routeTable = routeTable;
             this.appSettings = appSettings;
         }
@@ -66,6 +59,7 @@ namespace Gateway.Controllers
             var userIdentity = new ClaimsIdentity(claims, "login");
 
             ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+
             await HttpContext.SignInAsync(principal);
 
             return Ok();
@@ -86,8 +80,11 @@ namespace Gateway.Controllers
             return regResp.IsSuccessStatusCode ? (IActionResult)Ok() : (IActionResult)new UnauthorizedResult();
         }
 
+        [HttpGet]
+        [Route("signout")]
         public async Task<IActionResult> SignOut()
         {
+            await HttpContext.SignOutAsync();
             return Ok();
         }
 

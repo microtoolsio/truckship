@@ -63,6 +63,16 @@ namespace Auth.Controllers
             return Ok(resp);
         }
 
+        [HttpPost]
+        [TypeFilter(typeof(SvcAuthFilter))]
+        [Route("getsecret")]
+        public async Task<IActionResult> GetSecret([FromBody]SecuredModel m)
+        {
+            //TODO:NOTE: We can manage it later. We can store different secrets for deffirent app services or shared secret. We can update it by the schedule etc...
+            var s = "B69B6D11-215C-467D-B51D-90CDFEA67336";
+            return Ok(s);
+        }
+
         private string GetHashString(string pass, byte[] salt)
         {
             var h = KeyDerivation.Pbkdf2(password: pass, salt: salt, prf: KeyDerivationPrf.HMACSHA1,
