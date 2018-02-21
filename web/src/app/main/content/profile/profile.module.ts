@@ -13,9 +13,9 @@ const routes = [
     {
         path     : 'profile',
         component: FuseProfileComponent,
-        resolve  : {
-            profile: ProfileService
-        },
+        //resolve  : {
+        //    profile: ProfileService
+        //},
         canActivate: [AuthGuard],
     }
 ];
