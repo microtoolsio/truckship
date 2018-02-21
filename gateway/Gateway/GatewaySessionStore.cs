@@ -13,6 +13,8 @@ namespace Gateway
         // TODO: configurable.
         private const int ExpirationHours = 1;
 
+        private const string jwtTokenTemplate = "jwt_{0}";
+
         public GatewaySessionStore(IDistributedCache userCache)
         {
             this.userCache = userCache;

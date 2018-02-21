@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -5,10 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Gateway.Configs;
 using Gateway.Models;
+using JWT.Algorithms;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using JWT;
+using JWT.Builder;
 
 namespace Gateway.Controllers
 {
@@ -20,6 +24,10 @@ namespace Gateway.Controllers
 
         private readonly SvcRouteTable routeTable;
 
+        private readonly SecretStorage secretStorage;
+
+        private readonly JwtStorage jwtStorage;
+
         private readonly HttpClient client = new HttpClient();
 
 
@@ -27,10 +35,12 @@ namespace Gateway.Controllers
 
         #endregion
 
-        public AccountController(SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings)
+        public AccountController(SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings, SecretStorage secretStorage, JwtStorage jwtStorage)
         {
             this.routeTable = routeTable;
             this.appSettings = appSettings;
+            this.secretStorage = secretStorage;
+            this.jwtStorage = jwtStorage;
         }
 
         [HttpPost]
@@ -59,9 +69,14 @@ namespace Gateway.Controllers
             var userIdentity = new ClaimsIdentity(claims, "login");
 
             ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-
             await HttpContext.SignInAsync(principal);
 
+            var token = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
+                .WithSecret(this.secretStorage.Secret)
+                .AddClaim(ClaimName.Issuer, u.Result.Login)
+                .Build();
+
+            await jwtStorage.StoreJwt(principal.Identity.Name, token);
             return Ok();
         }
 
