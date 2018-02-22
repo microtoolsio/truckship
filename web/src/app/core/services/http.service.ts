@@ -29,18 +29,17 @@ export class HttpService {
     this.errorsObservable = new Subject<ErrorInfo>();
   }
 
+  //public setAuthHeader(value: string) {
+  //  this.authHeaderValue = value;
+  //}
 
-  public setAuthHeader(value: string) {
-    this.authHeaderValue = value;
-  }
-
-  private getAuthHeaders(): HttpHeaders {
-    let headers = new HttpHeaders();
-    if (this.authHeaderValue) {
-      headers = headers.set('Authorization', this.authHeaderValue);
-    }
-    return headers;
-  }
+  //private getAuthHeaders(): HttpHeaders {
+  //  let headers = new HttpHeaders();
+  //  if (this.authHeaderValue) {
+  //    headers = headers.set('Authorization', this.authHeaderValue);
+  //  }
+  //  return headers;
+  //}
 
   public post<T>(url: string): Observable<ExecutionResult<T>>;
 
@@ -48,13 +47,13 @@ export class HttpService {
 
   public post<T>(url: string, body: any, params: {}): Observable<ExecutionResult<T>>;
 
-  public post<T>(url: string, body?: any, params?: {}): Observable<ExecutionResult<T>> {
+  public post<T>(url: string, body?: any, params?: {}, extractSetCookie?: boolean): Observable<ExecutionResult<T>> {
     this.showLoader();
 
-    return this.http.post<T>(url, body, { observe: 'response', headers: this.getAuthHeaders(), params: params })
+    return this.http.post<T>(url, body, { observe: 'response', params: params })
       .map(x => {
         this.hideLoader();
-        return new ExecutionResult(x.body);
+        return new ExecutionResult<T>(x.body);
       })
       .catch(x => {
         this.hideLoader();
@@ -68,10 +67,10 @@ export class HttpService {
 
     this.showLoader();
 
-    return this.http.patch<T>(url, body, { observe: 'response', headers: this.getAuthHeaders(), params: params })
+    return this.http.patch<T>(url, body, { observe: 'response', params: params })
       .map(x => {
         this.hideLoader();
-        return new ExecutionResult(x.body);
+        return new ExecutionResult<T>(x.body);
       })
       .catch(x => {
         this.hideLoader();
@@ -83,10 +82,10 @@ export class HttpService {
 
     this.showLoader();
 
-    return this.http.delete<T>(url, { observe: 'response', headers: this.getAuthHeaders(), params: params })
+    return this.http.delete<T>(url, { observe: 'response', params: params })
       .map(x => {
         this.hideLoader();
-        return new ExecutionResult(x.body);
+        return new ExecutionResult<T>(x.body);
       })
       .catch(x => {
         this.hideLoader();
@@ -99,7 +98,7 @@ export class HttpService {
 
     this.showLoader();
 
-    return this.http.get<T>(url, { params: params, observe: 'response', headers: this.getAuthHeaders() })
+    return this.http.get<T>(url, { params: params, observe: 'response', })
       .map(x => {
         this.hideLoader();
         return new ExecutionResult<T>(x.body);

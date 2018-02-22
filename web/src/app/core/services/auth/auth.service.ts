@@ -15,7 +15,7 @@ export class AuthService {
   constructor(private httpService: HttpService, private router: Router) {
     httpService.errorsObservable.subscribe(x => {
       if (x.code === '401') {
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
       }
     });
   }
@@ -29,10 +29,8 @@ export class AuthService {
   }
 
   public loginUser(email: string, password: string): Observable<ExecutionResult<void>> {
-    return this.httpService.post<Jwt>(`${environment.api}/account/signin`, { login: email, password: password }).map(x => {
+    return this.httpService.post<void>(`${environment.api}/account/signin`, { login: email, password: password }).map(x => {
       if (x.success) {
-        //let tokenString = `Bearer ${x.value.access_token}`;
-        //this.httpService.setAuthHeader(tokenString);
         this.isAuthenticated = true;
         return new ExecutionResult(null);
       }
