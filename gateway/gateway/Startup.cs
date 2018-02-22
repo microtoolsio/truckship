@@ -35,11 +35,12 @@ namespace Gateway
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public async void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<GatewaySessionStore>();
             services.AddSingleton<SvcRouteTable>();
             services.AddSingleton<SecretStorage>();
+            services.AddSingleton<JwtStorage>();
 
             // Add framework services.
             services.AddMvc().AddJsonOptions(
@@ -82,12 +83,10 @@ namespace Gateway
                     }
                 });
 
-            //var sp = services.BuildServiceProvider();
-            //await sp.GetService<SecretStorage>().Init();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -102,6 +101,8 @@ namespace Gateway
             app.UseAuthentication();
 
             app.UseMvc();
+
+            await app.ApplicationServices.GetService<SecretStorage>().Init();
         }
     }
 }

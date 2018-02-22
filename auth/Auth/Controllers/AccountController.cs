@@ -70,7 +70,7 @@ namespace Auth.Controllers
         {
             //TODO:NOTE: We can manage it later. We can store different secrets for deffirent app services or shared secret. We can update it by the schedule etc...
             var s = "B69B6D11-215C-467D-B51D-90CDFEA67336";
-            return Ok(s);
+            return Ok(new ApiResponse<string> { Result = s });
         }
 
         private string GetHashString(string pass, byte[] salt)
