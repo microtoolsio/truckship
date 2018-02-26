@@ -41,7 +41,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
-        [TypeFilter(typeof(SvcAuthFilter))]
+       // [TypeFilter(typeof(SvcAuthFilter))]
         [Route("getuser")]
         public async Task<IActionResult> GetUser([FromBody]LoginModel login)
         {

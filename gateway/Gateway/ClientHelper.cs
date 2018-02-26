@@ -23,11 +23,13 @@ namespace Gateway
 
         public HttpClient GetServiceSecuredClient()
         {
-            var token = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
+            var t = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
                 .WithSecret(this.secretStorage.Secret)
+                .AddHeader(HeaderName.KeyId, this.secretStorage.Secret)
                 .AddClaim("svcId", appSettings.CurrentValue.SvcId)
-                .AddClaim("svcToken", appSettings.CurrentValue.Token)
-                .Build();
+                .AddClaim("svcToken", appSettings.CurrentValue.Token);
+
+            var token = t.Build();
 
             var authValue = new AuthenticationHeaderValue("Bearer", token);
 
@@ -49,6 +51,7 @@ namespace Gateway
             var token = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
                 .WithSecret(this.secretStorage.Secret)
                 .AddClaim(ClaimName.Issuer, user.FindFirst(ClaimTypes.Name).Value)
+                .AddHeader(HeaderName.KeyId, this.secretStorage.Secret)
                 .AddClaim("svcId", appSettings.CurrentValue.SvcId)
                 .AddClaim("svcToken", appSettings.CurrentValue.Token)
                 .Build();

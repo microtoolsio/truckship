@@ -1,8 +1,10 @@
 ﻿using Auth.Core;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Auth
 {
@@ -29,6 +31,13 @@ namespace Auth
             services.AddSingleton<SvcTokenStorage>();
 
             services.AddScoped<SvcAuthFilter>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -38,6 +47,9 @@ namespace Auth
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
+
             app.UseMvc();
         }
     }
