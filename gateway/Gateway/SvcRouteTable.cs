@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Gateway.Configs;
+using Gateway.Exceptions;
 using Microsoft.Extensions.Options;
 
 namespace Gateway

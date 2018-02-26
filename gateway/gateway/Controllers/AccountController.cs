@@ -24,59 +24,45 @@ namespace Gateway.Controllers
 
         private readonly SvcRouteTable routeTable;
 
-        private readonly SecretStorage secretStorage;
-
-        private readonly JwtStorage jwtStorage;
-
-        private readonly HttpClient client = new HttpClient();
-
-
-        private readonly IOptionsMonitor<AppSettings> appSettings;
+        private readonly ClientHelper clientHelper;
 
         #endregion
 
-        public AccountController(SvcRouteTable routeTable, IOptionsMonitor<AppSettings> appSettings, SecretStorage secretStorage, JwtStorage jwtStorage)
+        public AccountController(SvcRouteTable routeTable, ClientHelper clientHelper)
         {
             this.routeTable = routeTable;
-            this.appSettings = appSettings;
-            this.secretStorage = secretStorage;
-            this.jwtStorage = jwtStorage;
+            this.clientHelper = clientHelper;
         }
 
         [HttpPost]
         [Route("signin")]
         public async Task<IActionResult> SignIn([FromBody]UserModel user)
         {
-            var authResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.SignIn), new StringContent(JsonConvert.SerializeObject(new
+            using (var client = clientHelper.GetServiceSecuredClient())
             {
-                Login = user.Login,
-                Password = user.Password,
-                SvcId = this.appSettings.CurrentValue.SvcId,
-                SvcToken = this.appSettings.CurrentValue.Token
-            }), Encoding.UTF8, "application/json"));
+                var authResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.SignIn), new StringContent(JsonConvert.SerializeObject(new
+                {
+                    Login = user.Login,
+                    Password = user.Password,
+                }), Encoding.UTF8, "application/json"));
 
-            var u = JsonConvert.DeserializeObject<ApiResponse<UserModel>>(await authResp.Content.ReadAsStringAsync());
-            if (!u.Success || u.Result == null)
-            {
-                return new UnauthorizedResult();
-            }
+                var u = JsonConvert.DeserializeObject<ApiResponse<UserModel>>(await authResp.Content.ReadAsStringAsync());
+                if (!u.Success || u.Result == null)
+                {
+                    return new UnauthorizedResult();
+                }
 
-            var claims = new List<Claim>
+                var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, u.Result.Login)
                 };
 
-            var userIdentity = new ClaimsIdentity(claims, "login");
+                var userIdentity = new ClaimsIdentity(claims, "login");
 
-            ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-            await HttpContext.SignInAsync(principal);
+                ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
+                await HttpContext.SignInAsync(principal);
+            }
 
-            var token = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
-                .WithSecret(this.secretStorage.Secret)
-                .AddClaim(ClaimName.Issuer, u.Result.Login)
-                .Build();
-
-            await jwtStorage.StoreJwt(principal.Identity.Name, token);
             return Ok();
         }
 
@@ -84,15 +70,16 @@ namespace Gateway.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] UserModel user)
         {
-            var regResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.Register), new StringContent(JsonConvert.SerializeObject(new
+            using (var client = clientHelper.GetServiceSecuredClient())
             {
-                Login = user.Login,
-                Password = user.Password,
-                SvcId = this.appSettings.CurrentValue.SvcId,
-                SvcToken = this.appSettings.CurrentValue.Token
-            }), Encoding.UTF8, "application/json"));
+                var regResp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.Register), new StringContent(JsonConvert.SerializeObject(new
+                {
+                    Login = user.Login,
+                    Password = user.Password,
+                }), Encoding.UTF8, "application/json"));
 
-            return regResp.IsSuccessStatusCode ? (IActionResult)Ok() : (IActionResult)new UnauthorizedResult();
+                return regResp.IsSuccessStatusCode ? (IActionResult)Ok() : (IActionResult)new UnauthorizedResult();
+            }
         }
 
         [HttpGet]

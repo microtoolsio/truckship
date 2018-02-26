@@ -73,6 +73,13 @@ namespace Auth.Controllers
             return Ok(new ApiResponse<string> { Result = s });
         }
 
+        [Route("test")]
+        public async Task<IActionResult> Test()
+        {
+            return Ok();
+
+        }
+
         private string GetHashString(string pass, byte[] salt)
         {
             var h = KeyDerivation.Pbkdf2(password: pass, salt: salt, prf: KeyDerivationPrf.HMACSHA1,

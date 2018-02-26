@@ -40,7 +40,7 @@ namespace Gateway
             services.AddSingleton<GatewaySessionStore>();
             services.AddSingleton<SvcRouteTable>();
             services.AddSingleton<SecretStorage>();
-            services.AddSingleton<JwtStorage>();
+            services.AddSingleton<ClientHelper>();
 
             // Add framework services.
             services.AddMvc().AddJsonOptions(

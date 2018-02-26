@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,12 +10,24 @@ namespace Gateway.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly ClientHelper clientHelper;
+
+        public ValuesController(ClientHelper clientHelper)
+        {
+            this.clientHelper = clientHelper;
+        }
+
         // GET api/values
         [HttpGet]
         [Authorize]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            using (var client = clientHelper.GetSecuredClient(User))
+            {
+                var authResp = await client.GetAsync("http://localhost:50765/api/account/test");
+            }
+
+            return Ok();
         }
 
         // GET api/values/5
