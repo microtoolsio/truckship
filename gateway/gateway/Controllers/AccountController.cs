@@ -6,13 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Gateway.Configs;
 using Gateway.Models;
-using JWT.Algorithms;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using JWT;
-using JWT.Builder;
 
 namespace Gateway.Controllers
 {
