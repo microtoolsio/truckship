@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  svctemplate:
+    image: svctemplate
+    build:
+      context: .
+      dockerfile: svctemplate\Dockerfile
