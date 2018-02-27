@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "svctemplate.Domain", "svcte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "svctemplate.Data", "svctemplate.Data\svctemplate.Data.csproj", "{998F0C6F-AC5B-435F-98B9-8251E0D6F667}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "svctemplate.Tests", "svctemplate.Tests\svctemplate.Tests.csproj", "{035BF532-12E2-4C8D-8919-51BB4A053FCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{998F0C6F-AC5B-435F-98B9-8251E0D6F667}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{998F0C6F-AC5B-435F-98B9-8251E0D6F667}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{998F0C6F-AC5B-435F-98B9-8251E0D6F667}.Release|Any CPU.Build.0 = Release|Any CPU
+		{035BF532-12E2-4C8D-8919-51BB4A053FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035BF532-12E2-4C8D-8919-51BB4A053FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035BF532-12E2-4C8D-8919-51BB4A053FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035BF532-12E2-4C8D-8919-51BB4A053FCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
