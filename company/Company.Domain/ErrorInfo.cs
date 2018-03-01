@@ -45,4 +45,17 @@ namespace Company.Domain
             return String.Format("{0}. Code: '{1}', Message: '{2}'", base.ToString(), this.Code, this.Message);
         }
     }
+
+    public static class ErrorInfoFacory
+    {
+        public static ErrorInfo CreateOne(string message)
+        {
+            return new ErrorInfo(message);
+        }
+
+        public static ErrorInfo CreateOne(string code, string message)
+        {
+            return new ErrorInfo(code, message);
+        }
+    }
 }
