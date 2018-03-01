@@ -1,4 +1,5 @@
-﻿using Auth.Core;
+﻿using System.Text;
+using Auth.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,14 @@ namespace Auth
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("B69B6D11-215C-467D-B51D-90CDFEA67336")),
+                    ValidateLifetime = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true
+                };
             });
         }
 
