@@ -64,7 +64,7 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
-        [TypeFilter(typeof(SvcAuthFilter))]
+        //[TypeFilter(typeof(SvcAuthFilter))]
         [Route("getsecret")]
         public async Task<IActionResult> GetSecret([FromBody]SecuredModel m)
         {
