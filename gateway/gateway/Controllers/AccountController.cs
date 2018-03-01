@@ -43,6 +43,11 @@ namespace Gateway.Controllers
                     Password = user.Password,
                 }), Encoding.UTF8, "application/json"));
 
+                if (!authResp.IsSuccessStatusCode)
+                {
+                    return new StatusCodeResult((int)authResp.StatusCode);
+                }
+
                 var u = JsonConvert.DeserializeObject<ApiResponse<UserModel>>(await authResp.Content.ReadAsStringAsync());
                 if (!u.Success || u.Result == null)
                 {
