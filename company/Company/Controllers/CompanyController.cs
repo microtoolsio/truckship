@@ -21,7 +21,7 @@ namespace Company.Controllers
 
         // GET api/Company/5
         [HttpGet("{id}")]
-        public async Task<ExecutionResult<CompanyEntity>> Get(long id)
+        public async Task<ExecutionResult<CompanyEntity>> Get(string id)
         {
             return await this.CompanyService.GetCompany(id);
         }

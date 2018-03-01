@@ -14,7 +14,7 @@ namespace Company.Tests
         public async void CreateCompany()
         {
             var CompanyService = new CompanyService(new MongoDataProvider("mongodb://localhost:27017"));
-            var result = await CompanyService.CreateCompany(new CompanyEntity() { CompanyId = 5 });
+            var result = await CompanyService.CreateCompany(new CompanyEntity() { Identifier = "id" });
 
             Assert.NotNull(result);
             Assert.True(result.Success);

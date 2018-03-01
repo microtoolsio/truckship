@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Company.Domain.Exceptions;
 
 namespace Company.Core
 {
@@ -17,7 +17,7 @@ namespace Company.Core
         {
             this.mongoDataProvider = mongoDataProvider;
             var options = new CreateIndexOptions() { Unique = true };
-            var field = new StringFieldDefinition<CompanyEntity>(nameof(CompanyEntity.CompanyId));
+            var field = new StringFieldDefinition<CompanyEntity>(nameof(CompanyEntity.Identifier));
             var indexDefinition = new IndexKeysDefinitionBuilder<CompanyEntity>().Ascending(field);
             this.mongoDataProvider.CompanyDb.GetCollection<CompanyEntity>(CompanyCollection).Indexes
                 .CreateOne(indexDefinition, options);
@@ -30,14 +30,14 @@ namespace Company.Core
             return new ExecutionResult();
         }
 
-        public async Task<ExecutionResult<CompanyEntity>> GetCompany(long id)
+        public async Task<ExecutionResult<CompanyEntity>> GetCompany(string identifier)
         {
             var collection = this.mongoDataProvider.CompanyDb.GetCollection<CompanyEntity>(CompanyCollection);
-            var cursor = await collection.FindAsync(x => x.CompanyId == id);
+            var cursor = await collection.FindAsync(x => x.Identifier == identifier);
             var entity = await cursor.FirstOrDefaultAsync();
             if (entity == null)
             {
-                return new ExecutionResult<CompanyEntity>(new ErrorInfo("404", "Entity not found"));
+                throw new EntityNotFoundException(typeof(CompanyEntity), identifier);
             }
             return new ExecutionResult<CompanyEntity>(entity);
         }
