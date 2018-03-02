@@ -29,8 +29,8 @@ namespace Company
             var claim = claims.FirstOrDefault(x => x.Type == claimName);
             if (claim != null)
             {
-                Type t = toSet.Type;
-                Expression assignExpr = Expression.Assign(toSet, Expression.Constant(Convert.ChangeType(claim.Value, t)));
+                Type t = toSet.ReturnType;
+                Expression assignExpr = Expression.Assign(toSet.Body, Expression.Constant(Convert.ChangeType(claim.Value, t)));
                 Expression.Lambda<Func<T>>(assignExpr).Compile()();
             }
         }

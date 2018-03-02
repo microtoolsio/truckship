@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Controllers
 {
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
         [HttpPost]
@@ -34,6 +35,7 @@ namespace Company.Controllers
             return Ok();
         }
 
+        [Route("test")]
         public async Task<IActionResult> Test()
         {
             var claims = new List<Claim>
