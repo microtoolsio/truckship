@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Company
 {
@@ -35,14 +37,32 @@ namespace Company
             services.AddSingleton<MongoDataProvider>(new MongoDataProvider(mongoConnection));
 
             services.AddSingleton<CompanyService>();
+            services.AddSingleton<CompanyUserService>();
 
-            //services.AddScoped<SvcAuthFilter>();
 
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
             }).AddJwtBearer(options =>
             {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    //TODO: Get it from another source.(it should be changed autiomatically)
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("B69B6D11-215C-467D-B51D-90CDFEA67336")),
+                    ValidateLifetime = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Svc",
+                    policy => policy.Requirements.Add(new SvcRquirement()));
+                options.AddPolicy("SvcUser",
+                    policy => policy.Requirements.Add(new UserRequirement()));
             });
         }
 
@@ -53,6 +73,7 @@ namespace Company
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
 
             app.UseMvc();
         }

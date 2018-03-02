@@ -17,10 +17,12 @@ namespace Company
                 throw new NotAuthorizedException("Principal is not authenticated");
             }
             var identity = (ClaimsIdentity)principal.Identity;
-            var claims = identity.Claims;
+            var claims = identity.Claims.ToList();
 
             PrincipalInfo result = new PrincipalInfo();
             Set(() => result.Login, claims, "login");
+            Set(() => result.CompanyIdentifier, claims, "company");
+
             return result;
         }
 

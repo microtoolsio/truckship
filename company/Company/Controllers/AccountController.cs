@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Company.Core;
 using Company.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Controllers
@@ -10,43 +12,28 @@ namespace Company.Controllers
     [Route("api/[controller]")]
     public class AccountController : Controller
     {
-        [HttpPost]
-        [Route("signin")]
-        public async Task<IActionResult> SignIn([FromBody]LoginModel login)
+        private readonly CompanyUserService companyUserService;
+        private readonly SecurityService securityService;
+
+        public AccountController(CompanyUserService companyUserService, SecurityService securityService)
         {
-            /*  User
-              var res = await this.userStorage.GetUser(login.Login);
-              ApiResponse<UserModel> resp = new ApiResponse<UserModel>() { Error = res.Error };
-              if (res.Result != null)
-              {
-                  var hash = GetHashString(login.Password, Convert.FromBase64String(res.Result.Salt));
-                  if (hash != res.Result.PasswordHash)
-                  {
-                      return new UnauthorizedResult();
-                  }
-                  else
-                  {
-                      resp.Result = new UserModel() { Login = res.Result.Login };
-                  }
-              }
-
-              return Ok(resp);*/
-
-            return Ok();
+            this.companyUserService = companyUserService;
+            this.securityService = securityService;
         }
 
-        [Route("test")]
-        public async Task<IActionResult> Test()
+        [HttpPost]
+        [Route("signin")]
+        [Authorize(Policy = "SvcUser")]
+        public async Task<IActionResult> SignIn([FromBody]LoginModel login)
         {
-            var claims = new List<Claim>
+            var principalInfo = User.GetInfo();
+            var loginResult = await securityService.SignInUserToCompany(principalInfo.Login, login.CompanyIdentifier, login.Password);
+            if (!loginResult.Success || loginResult.Value == null)
             {
-                new Claim("login", "test")
-            };
+                return new UnauthorizedResult();
+            }
 
-            var userIdentity = new ClaimsIdentity(claims, "login");
-            ClaimsPrincipal pr = new ClaimsPrincipal(userIdentity);
-            var t = pr.GetInfo();
-            return Ok();
+            return Ok(new ApiResponse<CompanyModel>() { Result = new CompanyModel() { CompanyIdentifier = loginResult.Value.CompanyIdentifier } });
         }
     }
 }

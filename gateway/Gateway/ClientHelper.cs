@@ -32,18 +32,15 @@ namespace Gateway
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.secretStorage.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
+            IEnumerable<Claim> claims = new List<Claim>()
+            {
+                new Claim("svcId", appSettings.CurrentValue.SvcId),
+                new Claim("svcToken", appSettings.CurrentValue.Token)
+            };
+
             var token = new JwtSecurityToken(
-                issuer: $"{appSettings.CurrentValue.SvcId}:{appSettings.CurrentValue.Token}",
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-
-            /* var t = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
-                 .WithSecret(this.secretStorage.Secret)
-                 .AddHeader(HeaderName.KeyId, this.secretStorage.Secret)
-                 .AddClaim("svcId", appSettings.CurrentValue.SvcId)
-                 .AddClaim("svcToken", appSettings.CurrentValue.Token);
-
-             var token = t.Build();*/
+                signingCredentials: creds, claims: claims);
 
             var authValue = new AuthenticationHeaderValue("Bearer", new JwtSecurityTokenHandler().WriteToken(token));
 
@@ -62,19 +59,18 @@ namespace Gateway
                 throw new NotAuthorizedException("can't get jwt because the user is not authenticated");
             }
 
+            IEnumerable<Claim> claims = new List<Claim>()
+            {
+                new Claim("svcId", appSettings.CurrentValue.SvcId),
+                new Claim("svcToken", appSettings.CurrentValue.Token),
+                new Claim("login", user.FindFirst(ClaimTypes.Name).Value)
+            };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.secretStorage.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
-                issuer: $"{appSettings.CurrentValue.SvcId}:{appSettings.CurrentValue.Token}",
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-          /*  var token = new JwtBuilder().WithAlgorithm(new HMACSHA256Algorithm())
-                .WithSecret(this.secretStorage.Secret)
-                .AddClaim(ClaimName.Issuer, user.FindFirst(ClaimTypes.Name).Value)
-                .AddHeader(HeaderName.KeyId, this.secretStorage.Secret)
-                .AddClaim("svcId", appSettings.CurrentValue.SvcId)
-                .AddClaim("svcToken", appSettings.CurrentValue.Token)
-                .Build();*/
+                signingCredentials: creds, claims: claims);
 
             var authValue = new AuthenticationHeaderValue("Bearer", new JwtSecurityTokenHandler().WriteToken(token));
 

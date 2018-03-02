@@ -41,6 +41,7 @@ namespace Auth
                 options.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuer = false,
+                    //TODO: Get it from another source.(it should be changed autiomatically)
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("B69B6D11-215C-467D-B51D-90CDFEA67336")),
                     ValidateLifetime = false,
                     ValidateAudience = false,
