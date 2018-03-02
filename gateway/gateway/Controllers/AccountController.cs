@@ -56,10 +56,10 @@ namespace Gateway.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, u.Result.Login)
+                    new Claim("login", u.Result.Login)
                 };
 
-                var userIdentity = new ClaimsIdentity(claims, "login");
+                var userIdentity = new ClaimsIdentity(claims);
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
                 await HttpContext.SignInAsync(principal);
