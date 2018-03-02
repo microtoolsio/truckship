@@ -40,9 +40,8 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
-       // [TypeFilter(typeof(SvcAuthFilter))]
-        [Route("getuser")]
-        public async Task<IActionResult> GetUser([FromBody]LoginModel login)
+        [Route("signin")]
+        public async Task<IActionResult> SignIn([FromBody]LoginModel login)
         {
             var res = await this.userStorage.GetUser(login.Login);
             ApiResponse<UserModel> resp = new ApiResponse<UserModel>() { Error = res.Error };
@@ -63,7 +62,6 @@ namespace Auth.Controllers
         }
 
         [HttpPost]
-        //[TypeFilter(typeof(SvcAuthFilter))]
         [Route("getsecret")]
         public async Task<IActionResult> GetSecret([FromBody]SecuredModel m)
         {

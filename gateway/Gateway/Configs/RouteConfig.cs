@@ -4,6 +4,8 @@
     {
         public string SignIn { get; set; }
 
+        public string CompanySignIn { get; set; }
+
         public string Register { get; set; }
 
         public string GetSecret { get; set; }

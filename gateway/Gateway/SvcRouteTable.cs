@@ -9,6 +9,8 @@ namespace Gateway
     {
         #region [Route keys]
 
+        public const string CompanySignIn = "companysignin";
+
         public const string SignIn = "signin";
 
         public const string Register = "register";
@@ -32,6 +34,7 @@ namespace Gateway
             routes.TryAdd(SignIn, routeConfig.CurrentValue.SignIn);
             routes.TryAdd(Register, routeConfig.CurrentValue.Register);
             routes.TryAdd(GetSecret, routeConfig.CurrentValue.GetSecret);
+            routes.TryAdd(CompanySignIn, routeConfig.CurrentValue.CompanySignIn);
         }
 
         public string GetRoute(string key)
