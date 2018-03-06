@@ -28,6 +28,7 @@ import { FuseRegisterComponent } from "./main/content/authentication/register/re
 import { FuseForgotPasswordComponent } from "./main/content/authentication/forgot-password/forgot-password.component";
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { FuseFakeDbService } from './fuse-fake-db/fuse-fake-db.service';
+import {AccountModule} from "./main/content/account/account.module";
 
 const appRoutes: Routes = [
   {
@@ -83,7 +84,8 @@ const appRoutes: Routes = [
     // Maintenance
     MaintenanceModule,
 
-    ProfileModule
+    ProfileModule,
+    AccountModule
   ],
   providers: [
     FuseSplashScreenService,

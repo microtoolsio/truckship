@@ -16,7 +16,7 @@ const routes = [
         //resolve  : {
         //    profile: ProfileService
         //},
-        canActivate: [AuthGuard],
+        //canActivate: [AuthGuard],
     }
 ];
 

@@ -49,17 +49,17 @@ export class ProfileService implements Resolve<any>
    */
   getTimeline(): Promise<any[]> {
     return new Promise((resolve, reject) => {
-
-
       this.httpService.get(`${environment.api}/values`)
         .mergeMap(x => {
-          console.log(x);
+          if (!x.success) {
+            reject(x.errors);
+          }
           return this.http.get('api/profile-timeline');
         })
         //this.http.get('api/profile-timeline')
         .subscribe((timeline: any) => {
           this.timeline = timeline;
-          this.timelineOnChanged.next(this.timeline);
+          //this.timelineOnChanged.next(this.timeline);
           resolve(this.timeline);
         }, reject);
     });
@@ -74,7 +74,7 @@ export class ProfileService implements Resolve<any>
       this.http.get('api/profile-about')
         .subscribe((about: any) => {
           this.about = about;
-          this.aboutOnChanged.next(this.about);
+          //this.aboutOnChanged.next(this.about);
           resolve(this.about);
         }, reject);
     });
@@ -89,7 +89,7 @@ export class ProfileService implements Resolve<any>
       this.http.get('api/profile-photos-videos')
         .subscribe((photosVideos: any) => {
           this.photosVideos = photosVideos;
-          this.photosVideosOnChanged.next(this.photosVideos);
+          //this.photosVideosOnChanged.next(this.photosVideos);
           resolve(this.photosVideos);
         }, reject);
     });

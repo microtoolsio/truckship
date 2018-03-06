@@ -17,7 +17,7 @@ import { HttpErrorResponse } from "@angular/common/http/src/response";
 export class HttpService {
   private currentRequestsNumber: number = 0;
 
-  private authHeaderValue: string;
+  //private authHeaderValue: string;
 
   public errorsObservable: Subject<ErrorInfo>;
 

@@ -6,7 +6,7 @@ import { fuseAnimations } from '../../../core/animations';
     templateUrl  : './profile.component.html',
     styleUrls    : ['./profile.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    //animations   : fuseAnimations
 })
 export class FuseProfileComponent implements OnInit
 {
