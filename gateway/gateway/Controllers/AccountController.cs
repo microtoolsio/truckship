@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 
 namespace Gateway.Controllers
 {
+    using Microsoft.AspNetCore.Authentication.Cookies;
+
     [Produces("application/json")]
     [Route("api/Account")]
     public class AccountController : Controller
@@ -56,13 +58,13 @@ namespace Gateway.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim("login", u.Result.Login)
+                    new Claim(ClaimTypes.Name, u.Result.Login)
                 };
 
-                var userIdentity = new ClaimsIdentity(claims);
+                var userIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(userIdentity);
-                await HttpContext.SignInAsync(principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
             }
 
             return Ok();

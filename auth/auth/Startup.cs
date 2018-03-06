@@ -31,8 +31,6 @@ namespace Auth
             services.AddSingleton<UserStorage>();
             services.AddSingleton<SvcTokenStorage>();
 
-            services.AddScoped<SvcAuthFilter>();
-
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;

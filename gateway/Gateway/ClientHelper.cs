@@ -63,7 +63,7 @@ namespace Gateway
             {
                 new Claim("svcId", appSettings.CurrentValue.SvcId),
                 new Claim("svcToken", appSettings.CurrentValue.Token),
-                new Claim("login", user.FindFirst(ClaimTypes.Name).Value)
+                new Claim(ClaimTypes.Name, user.FindFirst(ClaimTypes.Name).Value)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.secretStorage.Secret));
