@@ -1,8 +1,8 @@
-FROM microsoft/aspnetcore:2.0-nanoserver-1709 AS base
+FROM microsoft/aspnetcore:2.0-nanoserver-sac2016 AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/aspnetcore-build:2.0-nanoserver-1709 AS build
+FROM microsoft/aspnetcore-build:2.0-nanoserver-sac2016 AS build
 WORKDIR /src
 COPY *.sln ./
 COPY Auth/Auth.csproj Auth/
@@ -19,4 +19,4 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "run", "Auth.dll"]
+ENTRYPOINT ["dotnet", "Auth.dll"]
