@@ -3,9 +3,9 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.0</ProjectVersion>
     <DockerTargetOS>Windows</DockerTargetOS>
-    <ProjectGuid>e86eb2ca-2fef-477a-9e39-c634b3a98b54</ProjectGuid>
+    <ProjectGuid>cbb2e9a6-8b5d-4322-b146-eed16f171107</ProjectGuid>
     <DockerLaunchBrowser>True</DockerLaunchBrowser>
-    <DockerServiceUrl>http://{ServiceIPAddress}/api/values</DockerServiceUrl>
+    <DockerServiceUrl>http://{ServiceIPAddress}</DockerServiceUrl>
     <DockerServiceName>auth</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

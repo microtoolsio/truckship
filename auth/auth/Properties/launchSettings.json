@@ -24,6 +24,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:50765/"
+    },
+    "CI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "ci"
+      },
+      "applicationUrl": "http://localhost:50765/"
     }
   }
 }
