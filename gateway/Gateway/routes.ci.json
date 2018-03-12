@@ -1,0 +1,6 @@
+﻿{
+  "SignIn": "http://13.93.12.78:5080/api/account/signin",
+  "Register": "http://13.93.12.78:5080/api/account/register",
+  "GetSecret": "http://13.93.12.78:5080/api/account/getsecret",
+  "CompanySignIn": "http://13.93.12.78:5082/api/account/signin"
+}

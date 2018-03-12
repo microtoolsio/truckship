@@ -17,6 +17,7 @@ namespace Gateway
     public class Startup
     {
         private IHostingEnvironment CurrentEnvironment { get; set; }
+        private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -25,6 +26,7 @@ namespace Gateway
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddJsonFile("routes.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"routes.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -32,9 +34,7 @@ namespace Gateway
             CurrentEnvironment = env;
         }
 
-        public IConfigurationRoot Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+      // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<GatewaySessionStore>();
