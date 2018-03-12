@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  Company:
-    image: Company
+  company:
+    image: company
     build:
       context: .
       dockerfile: Company\Dockerfile

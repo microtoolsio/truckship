@@ -50,10 +50,12 @@ namespace Gateway
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
+            var redisConnection = this.Configuration.GetConnectionString("Redis");
+
             //NOTE: Get from appsettings
             services.AddDistributedRedisCache(option =>
             {
-                option.Configuration = "localhost";
+                option.Configuration = redisConnection;
                 option.InstanceName = "master";
             });
 
