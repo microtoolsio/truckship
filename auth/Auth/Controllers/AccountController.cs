@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.Controllers
 {
+    using System.Globalization;
+
     [Produces("application/json")]
     [Route("api/Account")]
     public class AccountController : Controller
@@ -73,7 +75,7 @@ namespace Auth.Controllers
         [Route("test")]
         public async Task<IActionResult> Test()
         {
-            return Ok();
+            return Ok(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
 
         }
 
