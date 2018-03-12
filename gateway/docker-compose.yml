@@ -4,5 +4,5 @@ services:
   gateway:
     image: gateway
     build:
-      context: ./gateway
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: Gateway\Dockerfile

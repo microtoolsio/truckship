@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gateway.Controllers
 {
+    using System;
+    using System.Globalization;
+
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
@@ -27,7 +30,7 @@ namespace Gateway.Controllers
                 var authResp = await client.GetAsync("http://localhost:50765/api/account/test");
             }
 
-            return Ok();
+            return Ok($"Gateway returns UTC Datetime {DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)}");
         }
 
         // GET api/values/5

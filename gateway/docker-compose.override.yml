@@ -3,6 +3,10 @@ version: '3'
 services:
   gateway:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=ci
     ports:
-      - "80"
+      - "5081:80"
+networks:
+  default:
+    external:
+      name: nat
