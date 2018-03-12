@@ -75,7 +75,7 @@ namespace Auth.Controllers
         [Route("test")]
         public async Task<IActionResult> Test()
         {
-            return Ok(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            return Ok($"UTC TIME {DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)}");
 
         }
 
