@@ -3,9 +3,9 @@ version: '3'
 services:
   svctemplate:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=ci
     ports:
-      - "80"
+      - "_HOST_PORT_:80"
 networks:
   default:
     external:
