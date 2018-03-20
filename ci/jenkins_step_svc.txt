@@ -1,0 +1,12 @@
+cd %JOB_NAME%
+docker-compose stop || goto :error
+docker-compose rm --force || goto :error
+docker-compose -f docker-compose.yml -f docker-compose.override.yml build --force-rm || goto :error
+docker-compose -f docker-compose.yml -f docker-compose.override.yml -p dockercompose_%JOB_NAME% up -d || goto :error
+docker image prune --force || goto :error
+
+goto :EOF
+
+:error
+echo Failed with error #%errorlevel%.
+exit /b %errorlevel%

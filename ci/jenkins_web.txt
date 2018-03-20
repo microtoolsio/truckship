@@ -1,0 +1,6 @@
+net stop W3SVC
+cd %JOB_NAME%
+REM npm install
+ng build --prod
+
+net start W3SVC
