@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-account',
@@ -10,6 +10,7 @@ export class AccountComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.profileService.resolve(null, null);
   }
 
 }

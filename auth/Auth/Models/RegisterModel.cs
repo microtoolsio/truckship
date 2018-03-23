@@ -1,7 +1,9 @@
 ﻿namespace Auth.Models
 {
-    public class UserModel : SecuredModel
+    public class RegisterModel : SecuredModel
     {
+        public string Name { get; set; }
+
         public string Login { get; set; }
 
         public string Password { get; set; }

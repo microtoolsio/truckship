@@ -33,7 +33,29 @@ namespace Auth.Core
         {
             var users = this.dataProvider.AuthDb.GetCollection<User>("users");
             var user = await users.FindAsync(x => x.Login == login);
-            return new ExecutionResult<User>() { Result = await user.FirstOrDefaultAsync() };
+            var result = await user.FirstOrDefaultAsync();
+            var executionResult = new ExecutionResult<User>() { Result = result };
+            if (result == null)
+            {
+                executionResult.Error = "Not Found";
+            }
+            return executionResult;
+        }
+
+
+        public async Task<ExecutionResult> UpdateUser(User user)
+        {
+            var users = this.dataProvider.AuthDb.GetCollection<User>("users");
+            var updateResult = await users.UpdateOneAsync(x => x.Login == user.Login,
+                 Builders<User>.Update
+                     .Set(x => x.FirstName, user.FirstName)
+                     .Set(x => x.LastName, user.LastName));
+
+            if (updateResult.ModifiedCount == 0)
+            {
+                return new ExecutionResult() { Error = "Not Found" };
+            }
+            return new ExecutionResult();
         }
     }
 }

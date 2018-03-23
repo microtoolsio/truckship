@@ -25,7 +25,7 @@ namespace Gateway.Controllers
         [Authorize]
         public async Task<IActionResult> Get()
         {
-            using (var client = clientHelper.GetSecuredClient(User))
+            using (var client = clientHelper.GetServiceSecuredClient(User))
             {
                 var authResp = await client.GetAsync("http://localhost:50765/api/account/test");
             }

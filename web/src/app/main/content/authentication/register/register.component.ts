@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FuseConfigService } from '../../../../core/services/config.service';
@@ -70,7 +70,7 @@ export class FuseRegisterComponent implements OnInit {
 
   register() {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value.email, this.registerForm.value.password).subscribe(x => {
+      this.authService.register(this.registerForm.value.email, this.registerForm.value.password, this.registerForm.value.name).subscribe(x => {
         if (x.success) {
           this.router.navigate(['/login']);
         }

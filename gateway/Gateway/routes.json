@@ -1,6 +1,8 @@
 ﻿{
   "SignIn": "http://localhost:50765/api/account/signin",
   "Register": "http://localhost:50765/api/account/register",
+  "GetAccount": "http://localhost:50765/api/account",
+  "UpdateAccount": "http://localhost:50765/api/account",
   "GetSecret": "http://localhost:50765/api/account/getsecret",
   "CompanySignIn": "http://localhost:54915/api/account/signin"
 }
