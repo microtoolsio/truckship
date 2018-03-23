@@ -7,6 +7,8 @@
     {
         public string Identifier { get; set; }
 
+        public string OwnerIdentifier { get; set; }
+
         public string CompanyName { get; set; }
 
         public string Description { get; set; }

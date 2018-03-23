@@ -33,7 +33,7 @@ namespace Company.Controllers
                 return new UnauthorizedResult();
             }
 
-            return Ok(new ApiResponse<CompanyModel>() { Result = new CompanyModel() { CompanyIdentifier = loginResult.Value.CompanyIdentifier } });
+            return Ok(new ApiResponse<CompanySignInModel>() { Result = new CompanySignInModel() { CompanyIdentifier = loginResult.Value.CompanyIdentifier } });
         }
     }
 }

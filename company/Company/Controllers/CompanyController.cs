@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Company.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Controllers
@@ -25,9 +27,17 @@ namespace Company.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<ExecutionResult> Post(CompanyEntity value)
+        [Authorize(Policy = "SvcUser")]
+        public async Task<ExecutionResult> Post(CreateCompanyModel company)
         {
-            return await this.CompanyService.CreateCompany(value);
+            var principalInfo = User.GetInfo();
+
+            CompanyEntity entity = new CompanyEntity()
+            {
+                CompanyName = company.Name,
+                OwnerIdentifier = principalInfo.Login
+            };
+            return await this.CompanyService.CreateCompany(entity);
         }
 
         //// PUT api/values/5

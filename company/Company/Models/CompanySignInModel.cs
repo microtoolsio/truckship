@@ -1,6 +1,6 @@
 ﻿namespace Company.Models
 {
-    public class CompanyModel
+    public class CompanySignInModel
     {
         public string CompanyIdentifier { get; set; }
     }
