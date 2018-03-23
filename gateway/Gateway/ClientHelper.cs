@@ -52,7 +52,7 @@ namespace Gateway
             return client;
         }
 
-        public HttpClient GetSecuredClient(ClaimsPrincipal user)
+        public HttpClient GetServiceSecuredClient(ClaimsPrincipal user)
         {
             if (!user.Identity.IsAuthenticated)
             {

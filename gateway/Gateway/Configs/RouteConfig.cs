@@ -8,6 +8,10 @@
 
         public string Register { get; set; }
 
+        public string GetAccount { get; set; }
+
+        public string UpdateAccount { get; set; }
+
         public string GetSecret { get; set; }
     }
 }

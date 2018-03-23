@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpService } from '../http.service';
 import { Observable } from 'rxjs/Observable';
@@ -15,15 +15,15 @@ export class AuthService {
   constructor(private httpService: HttpService, private router: Router) {
     httpService.errorsObservable.subscribe(x => {
       if (x.code === '401') {
-        this.router.navigate(['/login']);
+        setTimeout(500, () => this.router.navigate(['/login']));
       }
     });
   }
 
-  //public isAuthenticated: boolean = false;
+  public isAuthenticated: boolean = false;
 
-  public register(email: string, password: string): Observable<ExecutionResult<void>> {
-    return this.httpService.post<void>(`${environment.api}/account/register`, { login: email, password: password }).map(x => {
+  public register(email: string, password: string, name: string): Observable<ExecutionResult<void>> {
+    return this.httpService.post<void>(`${environment.api}/account/register`, { login: email, password: password, name: name }).map(x => {
       return new ExecutionResult(null, x.errors);
     });
   }
@@ -31,7 +31,7 @@ export class AuthService {
   public loginUser(email: string, password: string): Observable<ExecutionResult<void>> {
     return this.httpService.post<void>(`${environment.api}/account/signin`, { login: email, password: password }).map(x => {
       if (x.success) {
-        //this.isAuthenticated = true;
+        this.isAuthenticated = true;
         return new ExecutionResult(null);
       }
       return new ExecutionResult(null, x.errors);
@@ -40,7 +40,7 @@ export class AuthService {
 
   public logOut(): Observable<ExecutionResult<void>> {
     return this.httpService.post<void>(`${environment.api}/account/logout`).map(x => {
-      //this.isAuthenticated = false;
+      this.isAuthenticated = false;
       return x;
     });
   }

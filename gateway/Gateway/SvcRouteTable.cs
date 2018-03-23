@@ -15,6 +15,10 @@ namespace Gateway
 
         public const string Register = "register";
 
+        public const string GetAccount = "GetAccount";
+
+        public const string UpdateAccount = "UpdateAccount";
+
         public const string GetSecret = "getsecret";
 
         #endregion
@@ -33,6 +37,8 @@ namespace Gateway
         {
             routes.TryAdd(SignIn, routeConfig.CurrentValue.SignIn);
             routes.TryAdd(Register, routeConfig.CurrentValue.Register);
+            routes.TryAdd(GetAccount, routeConfig.CurrentValue.GetAccount);
+            routes.TryAdd(UpdateAccount, routeConfig.CurrentValue.UpdateAccount);
             routes.TryAdd(GetSecret, routeConfig.CurrentValue.GetSecret);
             routes.TryAdd(CompanySignIn, routeConfig.CurrentValue.CompanySignIn);
         }
