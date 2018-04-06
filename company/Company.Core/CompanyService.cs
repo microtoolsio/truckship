@@ -1,4 +1,6 @@
-﻿using Company.Domain.Exceptions;
+﻿using System;
+using Company.Domain.Exceptions;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace Company.Core
 {
@@ -23,11 +25,13 @@ namespace Company.Core
                 .CreateOne(indexDefinition, options);
         }
 
-        public async Task<ExecutionResult> CreateCompany(CompanyEntity token)
+        public async Task<ExecutionResult<string>> CreateCompany(CompanyEntity token)
         {
+            string identitfier = Guid.NewGuid().ToString();
+            token.Identifier = identitfier;
             var tokens = this.mongoDataProvider.CompanyDb.GetCollection<CompanyEntity>(CompanyCollection);
             await tokens.InsertOneAsync(token);
-            return new ExecutionResult();
+            return new ExecutionResult<string>(identitfier);
         }
 
         public async Task<ExecutionResult<CompanyEntity>> GetCompany(string identifier)
@@ -41,5 +45,7 @@ namespace Company.Core
             }
             return new ExecutionResult<CompanyEntity>(entity);
         }
+
+
     }
 }

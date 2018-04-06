@@ -1,4 +1,4 @@
-﻿namespace Gateway.Models
+﻿namespace Gateway.Models.Company
 {
     public class CompanySignInModel
     {

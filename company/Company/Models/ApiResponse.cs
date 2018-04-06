@@ -10,5 +10,15 @@
     public class ApiResponse<T> : ApiResponse where T : class
     {
         public T Result { get; set; }
+
+        public ApiResponse()
+        {
+
+        }
+
+        public ApiResponse(T result)
+        {
+            Result = result;
+        }
     }
 }

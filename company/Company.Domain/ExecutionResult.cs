@@ -72,6 +72,7 @@ namespace Company.Domain
             : this((ExecutionResult)null)
         {
             this.Value = result;
+            this.Success = true;
         }
 
         public ExecutionResult(ErrorInfo error)
