@@ -26,13 +26,24 @@ namespace Gateway.Controllers
             this.routeTable = routeTable;
         }
 
-     /*   [HttpPost]
+        [HttpPost]
         [Route("register")]
         [Authorize]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register([FromBody]CompanyRegisterModel model)
         {
+            using (var client = clientHelper.GetServiceSecuredClient(User))
+            {
+                var resp = await client.PostAsync(this.routeTable.GetRoute(SvcRouteTable.CompanyCreate),
+                    new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json"));
 
-        }*/
+                if (!resp.IsSuccessStatusCode)
+                {
+                    return new StatusCodeResult((int)resp.StatusCode);
+                }
+
+                return Ok();
+            }
+        }
 
         [HttpPost]
         [Route("signin")]

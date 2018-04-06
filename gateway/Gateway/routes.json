@@ -4,5 +4,7 @@
   "GetAccount": "http://localhost:50765/api/account",
   "UpdateAccount": "http://localhost:50765/api/account",
   "GetSecret": "http://localhost:50765/api/account/getsecret",
-  "CompanySignIn": "http://localhost:54915/api/account/signin"
+  "CompanySignIn": "http://localhost:54915/api/account/signin",
+  "CompanyRegister": "http://localhost:54915/api/account/register",
+  "CompanyCreate": "http://localhost:54915/api/company/create"
 }

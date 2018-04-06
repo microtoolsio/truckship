@@ -11,6 +11,10 @@ namespace Gateway
 
         public const string CompanySignIn = "companysignin";
 
+        public const string CompanyCreate = "companycreate";
+
+        public const string CompanyRegister = "companyregister";
+
         public const string SignIn = "signin";
 
         public const string Register = "register";
@@ -41,6 +45,8 @@ namespace Gateway
             routes.TryAdd(UpdateAccount, routeConfig.CurrentValue.UpdateAccount);
             routes.TryAdd(GetSecret, routeConfig.CurrentValue.GetSecret);
             routes.TryAdd(CompanySignIn, routeConfig.CurrentValue.CompanySignIn);
+            routes.TryAdd(CompanyCreate, routeConfig.CurrentValue.CompanyCreate);
+            routes.TryAdd(CompanyRegister, routeConfig.CurrentValue.CompanyRegister);
         }
 
         public string GetRoute(string key)
