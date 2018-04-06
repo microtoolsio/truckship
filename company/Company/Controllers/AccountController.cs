@@ -40,7 +40,7 @@ namespace Company.Controllers
 
         [HttpPost]
         [Authorize(Policy = "SvcUser")]
-        public async Task<IActionResult> Register([FromBody]CreateCompanyModel company)
+        public async Task<IActionResult> Register([FromBody]RegisterModel model)
         {
             var principalInfo = User.GetInfo();
 
@@ -50,32 +50,18 @@ namespace Company.Controllers
                 rng.GetBytes(salt);
             }
 
-            CompanyEntity entity = new CompanyEntity()
+            CompanyUserEntity companyUser = new CompanyUserEntity()
             {
-                CompanyName = company.Name,
-                OwnerIdentifier = principalInfo.Login,
-                Email = company.Email,
-                Description = company.Description
+                CompanyIdentifier = model.CompanyIdentifier,
+                IsDefault = true,
+                PasswordHash = GetHashString(model.Password, salt),
+                UserIdentifier = principalInfo.Login
             };
 
-            var res = await this.companyService.CreateCompany(entity);
-
-            if (res.Success)
-            {
-                CompanyUserEntity companyUser = new CompanyUserEntity()
-                {
-                    CompanyIdentifier = res.Value,
-                    IsDefault = true,
-                    PasswordHash = GetHashString(company.Password, salt),
-                    UserIdentifier = entity.OwnerIdentifier
-                };
-
-                await this.companyUserService.CreateCompanyUser(companyUser);
-                return Ok(new ApiResponse<string>(res.Value));
-            }
-
-            return Ok(new ApiResponse<string>() { Error = res.Errors.Count > 0 ? string.Join(';', res.Errors) : "Error occured" });
+            await this.companyUserService.CreateCompanyUser(companyUser);
+            return Ok(new ApiResponse());
         }
+
 
         private string GetHashString(string pass, byte[] salt)
         {

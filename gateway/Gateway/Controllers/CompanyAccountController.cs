@@ -26,13 +26,13 @@ namespace Gateway.Controllers
             this.routeTable = routeTable;
         }
 
-        [HttpPost]
+     /*   [HttpPost]
         [Route("register")]
         [Authorize]
         public async Task<IActionResult> Register()
         {
 
-        }
+        }*/
 
         [HttpPost]
         [Route("signin")]

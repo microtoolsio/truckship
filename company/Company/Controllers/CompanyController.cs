@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Company.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Company.Controllers
@@ -21,6 +22,22 @@ namespace Company.Controllers
         public async Task<ExecutionResult<CompanyEntity>> Get(string id)
         {
             return await this.companyService.GetCompany(id);
+        }
+
+        public async Task<IActionResult> Register([FromBody] CreateCompanyModel company)
+        {
+            var principalInfo = User.GetInfo();
+
+            CompanyEntity entity = new CompanyEntity()
+            {
+                CompanyName = company.Name,
+                OwnerIdentifier = principalInfo.Login,
+                Email = company.Email,
+                Description = company.Description
+            };
+
+            var res = await this.companyService.CreateCompany(entity);
+            return Ok(new ApiResponse<string>(res.Value) { Error = string.Join(';', res.Errors) });
         }
     }
 }
