@@ -10,7 +10,7 @@ namespace svctemplate.Controllers
     using Domain;
 
     [Route("api/[controller]")]
-    public class SvcTemplateController : Controller
+    public class SvcTemplateController : ControllerBase
     {
         private readonly SvcTemplateService svcTemplateService;
 

@@ -5,6 +5,7 @@
     <AssemblyName>Gateway</AssemblyName>
     <RootNamespace>Gateway</RootNamespace>
     <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <UserSecretsId>b07d7660-5619-400c-8c7a-caffd6738ba8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
